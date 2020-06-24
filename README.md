@@ -1,1 +1,1 @@
-# JSON File Manager
+# Easily read/write/update JSON files
