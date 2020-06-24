@@ -1,0 +1,37 @@
+{
+  "name": "file-it",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "yarn build",
+    "test": "yarn build && mocha -r ts-node/register test/**/*.ts --reporter spec --timeout 20000 --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swdotcom/file-it.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/swdotcom/file-it/issues"
+  },
+  "homepage": "https://github.com/swdotcom/file-it#readme",
+  "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^14.0.14",
+    "chai": "^4.2.0",
+    "mocha": "^8.0.1",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  },
+  "optionalDependencies": {
+    "graceful-fs": "^4.2.4"
+  },
+  "dependencies": {
+    "universalify": "^1.0.0"
+  }
+}
