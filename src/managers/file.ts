@@ -90,10 +90,10 @@ export function _writeFileSync(file: string, obj: any, options: any = {}) {
  */
 export function _setJsonValue(file: string, key: string, value: any, options: any = {}) {
   // get the json and set/update
-  const jsonObj: any = _readFileSync(file) || getCachedData(file);
+  let jsonObj: any = _readFileSync(file) || getCachedData(file);
 
   if (!jsonObj) {
-    throw { message: `Error updating ${file}. Missing or content is malformed` };
+    jsonObj = {};
   }
 
   jsonObj[key] = value;
@@ -117,7 +117,7 @@ export function _getJsonValue(file: string, key: string): any {
   const jsonObj: any = _readFileSync(file) || getCachedData(file);
 
   if (!jsonObj) {
-    throw { message: `Error updating ${file}. Missing or content is malformed` };
+    return null;
   }
 
   return jsonObj[key];
