@@ -53,6 +53,21 @@ const val = await fileIt.getJsonValue(file, "hello");
 console.log("val: ", val); // prints out "universe"
 ```
 
+### getJsonLinesSync(filename)
+
+`filename` the full file path
+  - `throws` If `JSON.parse` throws an error, pass this error to the callback
+
+
+```js
+const fileIt = require('file-it')
+const file = '/tmp/linesOfJsonData.json'
+fileIt.getJsonLinesSync(file, function (err, obj) {
+  if (err) console.error(err)
+  console.dir(obj)
+})
+```
+
 ### readFile(filename)
 
 `filename` the full file path
