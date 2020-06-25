@@ -3,7 +3,7 @@
 file-it
 ================
 
-Helps minimize the amount of `fs` read and write logic, `try/catch` logic, write clean UTF8 content, and help cleanly read (cleans up byte order mark and newline characters) content in order to reliably parse.
+Helps minimize the amount of `fs` read and write logic, `try/catch` logic, writes clean UTF8 json content, and cleans up byte order mark and newline characters to cleanly read and parse json content.
 
 
 
