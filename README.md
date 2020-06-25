@@ -30,8 +30,8 @@ API
 * [`readContentFileSync(filename)`](#readcontentfilesyncfilename)
 * [`readJsonFile(filename, callback)`](#readjsonfilefilename-options-callback)
 * [`readJsonFileSync(filename)`](#readjsonfilesyncfilename)
-* [`writeContentFileAsync(file, content, options)`](writecontentfileasyncfile-content-options)
-* [`writeContentFileSync(file, content, options)`](writecontentfilesyncfile-content-options)
+* [`writeContentFile(filename, content, callback)`](#writecontentfilefilename-content-callback)
+* [`writeContentFileSync(filename, content)`](#writecontentfilesyncfilename-content)
 * [`writeJsonFile(filename, obj, [options], callback)`](#writejsonfilefilename-obj-options-callback)
 * [`writeJsonFileSync(filename, obj, [options])`](#writejsonfilesyncfilename-obj-options)
 
@@ -49,6 +49,8 @@ const file = '/tmp/data.json'
 fileIt.setJsonValue(file, "hello", "universe", {spaces: 2});
 ```
 
+----
+
 ### getJsonValue(filename, key)
 
 `filename` the full file path
@@ -61,6 +63,8 @@ await fileIt.setJsonValue(file, "hello", "universe", {spaces: 2});
 const val = await fileIt.getJsonValue(file, "hello");
 console.log("val: ", val); // prints out "universe"
 ```
+
+----
 
 ### getJsonLinesSync(filename)
 
@@ -77,6 +81,8 @@ fileIt.getJsonLinesSync(file, function (err, data) {
 })
 ```
 
+----
+
 ### readContentFile(filename)
 
 `filename` the full file path
@@ -91,6 +97,8 @@ fileIt.readContentFile(file, function (err, data) {
 })
 ```
 
+----
+
 ### readContentFileSync(filename)
 
 `filename` the full file path
@@ -101,6 +109,8 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 console.log(fileIt.readContentFileSync(file))
 ```
+
+----
 
 ### readJsonFile(filename)
 
@@ -138,6 +148,36 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 
 console.log(fileIt.readJsonFileSync(file))
+```
+
+----
+
+### writeContentFile(filename, content, callback)
+
+
+```js
+const fileIt = require('file-it')
+
+const file = '/tmp/data.json'
+const content = "hello world"
+
+fileIt.writeContentFile(filename, content, function (err) {
+  if (err) console.error(err)
+})
+```
+
+----
+
+### writeContentFileSync(filename, content)
+
+
+```js
+const fileIt = require('file-it')
+
+const file = '/tmp/data.json'
+const content = "hello world"
+
+fileIt.writeContentFile(filename, content)
 ```
 
 ----
