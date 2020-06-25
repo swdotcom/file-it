@@ -10,8 +10,7 @@
     "test": "yarn build && mocha -r ts-node/register test/**/*.ts --reporter spec --timeout 20000 --exit",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
-    "version": "yarn format && git add -A src",
-    "prepublishOnly": "yarn test && yarn run lint"
+    "version": "yarn format && git add -A src"
   },
   "repository": {
     "type": "git",
