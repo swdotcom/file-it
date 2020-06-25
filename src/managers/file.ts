@@ -20,7 +20,7 @@ export async function _makeDirSync(file: string) {
  * @param options
  */
 export async function _readFileAsync(file: string): Promise<any> {
-  if (fs.existsSync(file)) {
+  if (!fs.existsSync(file)) {
     return null;
   }
 
@@ -47,7 +47,7 @@ export async function _readFileAsync(file: string): Promise<any> {
  * @param options
  */
 export function _readFileSync(file: string) {
-  if (fs.existsSync(file)) {
+  if (!fs.existsSync(file)) {
     return null;
   }
 
