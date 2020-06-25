@@ -58,7 +58,10 @@ export function _readFileSync(file: string) {
  */
 export async function _writeFileAsync(file: string, obj: any, options: any = {}) {
   const str: string = jsonStringify(obj, options);
-  await universalify.fromCallback(_fs.writeFile)(file, str, { encoding: "utf8" });
+  if (!options.encoding) {
+    options["encoding"] = "utf8";
+  }
+  await universalify.fromCallback(_fs.writeFile)(file, str, options);
 }
 
 /**
@@ -66,7 +69,10 @@ export async function _writeFileAsync(file: string, obj: any, options: any = {})
  */
 export function _writeFileSync(file: string, obj: any, options: any = {}) {
   const str: string = jsonStringify(obj, options);
-  return _fs.writeFileSync(file, str, { encoding: "utf8" });
+  if (!options.encoding) {
+    options["encoding"] = "utf8";
+  }
+  return _fs.writeFileSync(file, str, options);
 }
 
 /**
