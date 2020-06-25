@@ -26,12 +26,12 @@ API
 * [`setJsonValue(filename, key, value, [options])`](#setjsonvalue-filename-key-value-options)
 * [`getJsonValue(filename, key)`](#getjsonvaluefilename-key)
 * [`getJsonLinesSync(filename)`](#getjsonlinessyncfilename)
-* [`readContentFile(filename)`]
-* [`readContentFileSync(filename)`]
+* [`readContentFile(filename)`](#readcontentfilefilename)
+* [`readContentFileSync(filename)`](#readcontentfilesyncfilename)
 * [`readJsonFile(filename, callback)`](#readjsonfilefilename-options-callback)
 * [`readJsonFileSync(filename)`](#readjsonfilesyncfilename)
-* [`writeContentFileAsync(file, content, options)`]
-* [`writeContentFileSync(file, content, options)`]
+* [`writeContentFileAsync(file, content, options)`](writecontentfileasyncfile-content-options)
+* [`writeContentFileSync(file, content, options)`](writecontentfilesyncfile-content-options)
 * [`writeJsonFile(filename, obj, [options], callback)`](#writejsonfilefilename-obj-options-callback)
 * [`writeJsonFileSync(filename, obj, [options])`](#writejsonfilesyncfilename-obj-options)
 
@@ -71,9 +71,9 @@ console.log("val: ", val); // prints out "universe"
 ```js
 const fileIt = require('file-it')
 const file = '/tmp/linesOfJsonData.json'
-fileIt.getJsonLinesSync(file, function (err, obj) {
+fileIt.getJsonLinesSync(file, function (err, data) {
   if (err) console.error(err)
-  console.dir(obj)
+  else console.log(data)
 })
 ```
 
@@ -85,9 +85,9 @@ fileIt.getJsonLinesSync(file, function (err, obj) {
 ```js
 const fileIt = require('file-it')
 const file = '/tmp/data.json'
-fileIt.readContentFile(file, function (err, obj) {
+fileIt.readContentFile(file, function (err, data) {
   if (err) console.error(err)
-  console.dir(obj)
+  else console.log(data)
 })
 ```
 
@@ -111,9 +111,9 @@ console.log(fileIt.readContentFileSync(file))
 ```js
 const fileIt = require('file-it')
 const file = '/tmp/data.json'
-fileIt.readJsonFile(file, function (err, obj) {
+fileIt.readJsonFile(file, function (err, data) {
   if (err) console.error(err)
-  console.dir(obj)
+  else console.log(data)
 })
 ```
 
@@ -123,7 +123,7 @@ You can also use this method with promises. The `readJsonFile` method will retur
 const fileIt = require('file-it')
 const file = '/tmp/data.json'
 fileIt.readJsonFile(file)
-  .then(obj => console.dir(obj))
+  .then(data => console.log(data))
   .catch(error => console.error(error))
 ```
 
