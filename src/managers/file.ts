@@ -1,5 +1,5 @@
 import { cleanJsonString, jsonStringify } from "./util";
-import _fs = require("fs");
+import fs = require("fs");
 
 const universalify = require("universalify");
 
@@ -9,8 +9,8 @@ const universalify = require("universalify");
 const dataMap: any = {};
 
 export async function _makeDirSync(file: string) {
-  if (!_fs.existsSync(file)) {
-    _fs.mkdirSync(file);
+  if (!fs.existsSync(file)) {
+    fs.mkdirSync(file);
   }
 }
 
@@ -20,7 +20,7 @@ export async function _makeDirSync(file: string) {
  * @param options
  */
 export async function _readFileAsync(file: string): Promise<any> {
-  let data: any = await universalify.fromCallback(_fs.readFile)(file, {
+  let data: any = await universalify.fromCallback(fs.readFile)(file, {
     encoding: "utf8",
   });
   // remove byte order mark
@@ -44,7 +44,7 @@ export async function _readFileAsync(file: string): Promise<any> {
  */
 export function _readFileSync(file: string) {
   try {
-    let content: string = _fs.readFileSync(file, { encoding: "utf8" });
+    let content: string = fs.readFileSync(file, { encoding: "utf8" });
     content = cleanJsonString(content);
     return JSON.parse(content);
   } catch (err) {
@@ -57,22 +57,24 @@ export function _readFileSync(file: string) {
  * Write a file asynchronously
  */
 export async function _writeFileAsync(file: string, obj: any, options: any = {}) {
+  dataMap[file] = obj;
   const str: string = jsonStringify(obj, options);
   if (!options.encoding) {
     options["encoding"] = "utf8";
   }
-  await universalify.fromCallback(_fs.writeFile)(file, str, options);
+  await universalify.fromCallback(fs.writeFile)(file, str, options);
 }
 
 /**
  * Write a file synchronously
  */
 export function _writeFileSync(file: string, obj: any, options: any = {}) {
+  dataMap[file] = obj;
   const str: string = jsonStringify(obj, options);
   if (!options.encoding) {
     options["encoding"] = "utf8";
   }
-  return _fs.writeFileSync(file, str, options);
+  return fs.writeFileSync(file, str, options);
 }
 
 /**
@@ -87,6 +89,8 @@ export function _setJsonValue(file: string, key: string, value: any, options: an
   }
 
   jsonObj[key] = value;
+
+  dataMap[file] = jsonObj;
 
   // write the update
   _writeFileSync(file, jsonObj, options);
@@ -106,6 +110,36 @@ export function _getJsonValue(file: string, key: string): any {
   }
 
   return jsonObj[key];
+}
+
+/**
+ * Return a JSON array from a file containing lines of JSON
+ * @param file
+ */
+export function _getJsonLinesSync(file: string): any[] {
+  let jsonArray: any = [];
+  if (fs.existsSync(file)) {
+    const content = fs.readFileSync(file, { encoding: "utf8" }).toString();
+    if (content) {
+      try {
+        jsonArray = content
+          .split(/\r?\n/)
+          // parse each line to JSON
+          .map((item) => {
+            if (item) {
+              return JSON.parse(item);
+            }
+            return null;
+          })
+          // make sure we don't return any null lines
+          .filter((item) => item);
+      } catch (err) {
+        err.message = `${file}: ${err.message}`;
+        throw err;
+      }
+    }
+  }
+  return jsonArray;
 }
 
 function getCachedData(file: string): any {

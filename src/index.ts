@@ -6,6 +6,7 @@ import {
   _setJsonValue,
   _getJsonValue,
   _makeDirSync,
+  _getJsonLinesSync,
 } from "./managers/file";
 const universalify = require("universalify");
 
@@ -17,6 +18,7 @@ const fileIt = {
   writeFileSync: _writeFileSync,
   setJsonValue: _setJsonValue,
   getJsonValue: _getJsonValue,
+  getJsonLinesSync: _getJsonLinesSync,
 };
 
 module.exports = fileIt;
