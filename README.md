@@ -14,7 +14,11 @@ Installation
     OR
     yarn add file-it
 
-
+Import or Require
+-----------------
+    import fileIt from "file-it";
+    OR
+    const fileIt = require("file-it");
 
 API
 ---

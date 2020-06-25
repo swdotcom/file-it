@@ -20,6 +20,10 @@ export async function _makeDirSync(file: string) {
  * @param options
  */
 export async function _readFileAsync(file: string): Promise<any> {
+  if (fs.existsSync(file)) {
+    return null;
+  }
+
   let data: any = await universalify.fromCallback(fs.readFile)(file, {
     encoding: "utf8",
   });
@@ -43,6 +47,10 @@ export async function _readFileAsync(file: string): Promise<any> {
  * @param options
  */
 export function _readFileSync(file: string) {
+  if (fs.existsSync(file)) {
+    return null;
+  }
+
   try {
     let content: string = fs.readFileSync(file, { encoding: "utf8" });
     content = cleanJsonString(content);
@@ -102,6 +110,9 @@ export function _setJsonValue(file: string, key: string, value: any, options: an
  * @param key
  */
 export function _getJsonValue(file: string, key: string): any {
+  if (!fs.existsSync(file)) {
+    return null;
+  }
   // get the value based on the key
   const jsonObj: any = _readFileSync(file) || getCachedData(file);
 
