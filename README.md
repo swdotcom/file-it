@@ -23,13 +23,13 @@ Import or Require
 API
 ---
 
-* [`setJsonValue(filename, key, value, [options])`]
-* [`getJsonValue(filename, key)`]
-* [`getJsonLinesSync(filename)`]
-* [`readFile(filename, callback)`]
-* [`readFileSync(filename)`]
-* [`writeFile(filename, obj, [options], callback)`]
-* [`writeFileSync(filename, obj, [options])`]
+* [`setJsonValue(filename, key, value, [options])`](#setjsonvalue-filename-key-value-options)
+* [`getJsonValue(filename, key)`](#getjsonvaluefilename-key)
+* [`getJsonLinesSync(filename)`](#getjsonlinessyncfilename)
+* [`readFile(filename, callback)`](#readfilefilename-options-callback)
+* [`readFileSync(filename)`](#readfilesyncfilename)
+* [`writeFile(filename, obj, [options], callback)`](#writefilefilename-obj-options-callback)
+* [`writeFileSync(filename, obj, [options])`](#writefilesyncfilename-obj-options)
 
 ----
 
