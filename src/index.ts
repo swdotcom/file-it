@@ -1,21 +1,21 @@
 import {
-  _readFileAsync,
-  _readFileSync,
-  _writeFileAsync,
-  _writeFileSync,
+  _readJsonFileAsync,
+  _readJsonFileSync,
+  _writeJsonFileAsync,
+  _writeJsonFileSync,
   _setJsonValue,
   _getJsonValue,
   _makeDirSync,
   _getJsonLinesSync,
 } from "./managers/file";
-const universalify = require("universalify");
+import universalify = require("universalify");
 
 const fileIt = {
   makeDirSync: _makeDirSync,
-  readFile: universalify.fromPromise(_readFileAsync),
-  readFileSync: _readFileSync,
-  writeFile: universalify.fromPromise(_writeFileAsync),
-  writeFileSync: _writeFileSync,
+  readJsonFile: universalify.fromPromise(_readJsonFileAsync),
+  readJsonFileSync: _readJsonFileSync,
+  writeJsonFile: universalify.fromPromise(_writeJsonFileAsync),
+  writeJsonFileSync: _writeJsonFileSync,
   setJsonValue: _setJsonValue,
   getJsonValue: _getJsonValue,
   getJsonLinesSync: _getJsonLinesSync,

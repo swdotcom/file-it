@@ -26,10 +26,10 @@ API
 * [`setJsonValue(filename, key, value, [options])`](#setjsonvalue-filename-key-value-options)
 * [`getJsonValue(filename, key)`](#getjsonvaluefilename-key)
 * [`getJsonLinesSync(filename)`](#getjsonlinessyncfilename)
-* [`readFile(filename, callback)`](#readfilefilename-options-callback)
-* [`readFileSync(filename)`](#readfilesyncfilename)
-* [`writeFile(filename, obj, [options], callback)`](#writefilefilename-obj-options-callback)
-* [`writeFileSync(filename, obj, [options])`](#writefilesyncfilename-obj-options)
+* [`readJsonFile(filename, callback)`](#readjsonfilefilename-options-callback)
+* [`readJsonFileSync(filename)`](#readjsonfilesyncfilename)
+* [`writeJsonFile(filename, obj, [options], callback)`](#writejsonfilefilename-obj-options-callback)
+* [`writeJsonFileSync(filename, obj, [options])`](#writejsonfilesyncfilename-obj-options)
 
 ----
 
@@ -73,7 +73,7 @@ fileIt.getJsonLinesSync(file, function (err, obj) {
 })
 ```
 
-### readFile(filename)
+### readJsonFile(filename)
 
 `filename` the full file path
   - `throws` If `JSON.parse` throws an error, pass this error to the callback
@@ -82,25 +82,25 @@ fileIt.getJsonLinesSync(file, function (err, obj) {
 ```js
 const fileIt = require('file-it')
 const file = '/tmp/data.json'
-fileIt.readFile(file, function (err, obj) {
+fileIt.readJsonFile(file, function (err, obj) {
   if (err) console.error(err)
   console.dir(obj)
 })
 ```
 
-You can also use this method with promises. The `readFile` method will return a promise if you do not pass a callback function.
+You can also use this method with promises. The `readJsonFile` method will return a promise if you do not pass a callback function.
 
 ```js
 const fileIt = require('file-it')
 const file = '/tmp/data.json'
-fileIt.readFile(file)
+fileIt.readJsonFile(file)
   .then(obj => console.dir(obj))
   .catch(error => console.error(error))
 ```
 
 ----
 
-### readFileSync(filename, [options])
+### readJsonFileSync(filename, [options])
 
 - `throws` If an error is encountered reading or parsing the file, throw the error
 
@@ -108,12 +108,12 @@ fileIt.readFile(file)
 const fileIt = require('file-it')
 const file = '/tmp/data.json'
 
-console.dir(fileIt.readFileSync(file))
+console.dir(fileIt.readJsonFileSync(file))
 ```
 
 ----
 
-### writeFile(filename, obj, [options], callback)
+### writeJsonFile(filename, obj, [options], callback)
 
 `options`: Pass in any [`fs.writeFile`](https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback) options or set `replacer` for a [JSON replacer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify). Can also pass in `spaces` and override `EOL` string.
 
@@ -124,7 +124,7 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
-fileIt.writeFile(file, obj, function (err) {
+fileIt.writeJsonFile(file, obj, function (err) {
   if (err) console.error(err)
 })
 ```
@@ -136,7 +136,7 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
-fileIt.writeFile(file, obj)
+fileIt.writeJsonFile(file, obj)
   .then(res => {
     console.log('Write complete')
   })
@@ -152,7 +152,7 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
-fileIt.writeFile(file, obj, { spaces: 2 }, function (err) {
+fileIt.writeJsonFile(file, obj, { spaces: 2 }, function (err) {
   if (err) console.error(err)
 })
 ```
@@ -165,7 +165,7 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
-fileIt.writeFile(file, obj, { spaces: 2, EOL: '\r\n' }, function (err) {
+fileIt.writeJsonFile(file, obj, { spaces: 2, EOL: '\r\n' }, function (err) {
   if (err) console.error(err)
 })
 ```
@@ -180,14 +180,14 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
-fileIt.writeFile(file, obj, { flag: 'a' }, function (err) {
+fileIt.writeJsonFile(file, obj, { flag: 'a' }, function (err) {
   if (err) console.error(err)
 })
 ```
 
 ----
 
-### writeFileSync(filename, obj, [options])
+### writeJsonFileSync(filename, obj, [options])
 
 `options`: Pass in any [`fs.writeFileSync`](https://nodejs.org/api/fs.html#fs_fs_writefilesync_file_data_options) options or set `replacer` for a [JSON replacer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify). Can also pass in `spaces` and override `EOL` string.
 
@@ -197,7 +197,7 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
-fileIt.writeFileSync(file, obj)
+fileIt.writeJsonFileSync(file, obj)
 ```
 
 **formatting with spaces:**
@@ -208,7 +208,7 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
-fileIt.writeFileSync(file, obj, { spaces: 2 })
+fileIt.writeJsonFileSync(file, obj, { spaces: 2 })
 ```
 
 **overriding EOL:**
@@ -219,7 +219,7 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
-fileIt.writeFileSync(file, obj, { spaces: 2, EOL: '\r\n' })
+fileIt.writeJsonFileSync(file, obj, { spaces: 2, EOL: '\r\n' })
 ```
 
 **appending to an existing JSON file:**
@@ -232,7 +232,7 @@ const fileIt = require('file-it')
 const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
-fileIt.writeFileSync(file, obj, { flag: 'a' })
+fileIt.writeJsonFileSync(file, obj, { flag: 'a' })
 ```
 
 

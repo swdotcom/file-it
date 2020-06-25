@@ -1,7 +1,6 @@
 import { cleanJsonString, jsonStringify } from "./util";
 import fs = require("fs");
-
-const universalify = require("universalify");
+import universalify = require("universalify");
 
 // this keeps a map of:
 // fileName => jsonData
@@ -19,7 +18,7 @@ export async function _makeDirSync(file: string) {
  * @param file
  * @param options
  */
-export async function _readFileAsync(file: string): Promise<any> {
+export async function _readJsonFileAsync(file: string): Promise<any> {
   if (!fs.existsSync(file)) {
     return null;
   }
@@ -46,7 +45,7 @@ export async function _readFileAsync(file: string): Promise<any> {
  * @param file
  * @param options
  */
-export function _readFileSync(file: string) {
+export function _readJsonFileSync(file: string) {
   if (!fs.existsSync(file)) {
     return null;
   }
@@ -64,11 +63,14 @@ export function _readFileSync(file: string) {
 /**
  * Write a file asynchronously
  */
-export async function _writeFileAsync(file: string, obj: any, options: any = {}) {
+export async function _writeJsonFileAsync(file: string, obj: any, options: any = {}) {
   dataMap[file] = obj;
   const str: string = jsonStringify(obj, options);
   if (!options.encoding) {
-    options["encoding"] = "utf8";
+    options = {
+      ...options,
+      encoding: "utf8"
+    }
   }
   await universalify.fromCallback(fs.writeFile)(file, str, options);
 }
@@ -76,11 +78,14 @@ export async function _writeFileAsync(file: string, obj: any, options: any = {})
 /**
  * Write a file synchronously
  */
-export function _writeFileSync(file: string, obj: any, options: any = {}) {
+export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
   dataMap[file] = obj;
   const str: string = jsonStringify(obj, options);
   if (!options.encoding) {
-    options["encoding"] = "utf8";
+    options = {
+      ...options,
+      encoding: "utf8"
+    }
   }
   return fs.writeFileSync(file, str, options);
 }
@@ -90,7 +95,7 @@ export function _writeFileSync(file: string, obj: any, options: any = {}) {
  */
 export function _setJsonValue(file: string, key: string, value: any, options: any = {}) {
   // get the json and set/update
-  let jsonObj: any = _readFileSync(file) || getCachedData(file);
+  let jsonObj: any = _readJsonFileSync(file) || getCachedData(file);
 
   if (!jsonObj) {
     jsonObj = {};
@@ -101,7 +106,7 @@ export function _setJsonValue(file: string, key: string, value: any, options: an
   dataMap[file] = jsonObj;
 
   // write the update
-  _writeFileSync(file, jsonObj, options);
+  _writeJsonFileSync(file, jsonObj, options);
 }
 
 /**
@@ -114,7 +119,7 @@ export function _getJsonValue(file: string, key: string): any {
     return null;
   }
   // get the value based on the key
-  const jsonObj: any = _readFileSync(file) || getCachedData(file);
+  const jsonObj: any = _readJsonFileSync(file) || getCachedData(file);
 
   if (!jsonObj) {
     return null;

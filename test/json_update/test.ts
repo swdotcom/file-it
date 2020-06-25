@@ -24,7 +24,7 @@ describe("Json Update Tests", function () {
 
   it("Validate updating a json file", function () {
     const file = path.join(TEST_DIR, 'tmp.json');
-    fileIt.writeFileSync(file, { hello: "there" }, { spaces: 2 });
+    fileIt.writeJsonFileSync(file, { hello: "there" }, { spaces: 2 });
     fileIt.setJsonValue(file, "hello", "world", { spaces: 2 });
     const val = fileIt.getJsonValue(file, "hello");
     expect(val).to.equal("world");

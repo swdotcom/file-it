@@ -43,6 +43,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.14.tgz#24a0b5959f16ac141aeb0c5b3cd7a15b7c64cbce"
   integrity sha512-syUgf67ZQpaJj01/tRTknkMNoBBLWJOBODF0Zm4NrXmiSuxjymFrxnTu1QVYRubhVkRcZLYZG8STTwJRdVm/WQ==
 
+"@types/universalify@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/universalify/-/universalify-1.0.0.tgz#0fecec0da49839da8b705ddc714600c480ea3dee"
+  integrity sha512-Cqm/s2DU7YxTcTtQZkfG7kyOULQKsl0Mpd3dKAm0CbSStcRsQdy1nctCBGCmyNvxWUEYReqWkBIUvNHBN/Ja6w==
+
 acorn-jsx@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.2.0.tgz#4c66069173d6fdd68ed85239fc256226182b2ebe"
