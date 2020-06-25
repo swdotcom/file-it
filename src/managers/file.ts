@@ -1,17 +1,12 @@
 import { cleanJsonString, jsonStringify } from "./util";
+import _fs = require("fs");
 
-const universalify = require('universalify');
-let _fs: any;
-try {
-  _fs = require('graceful-fs');
-} catch (_) {
-  _fs = require('fs');
-}
+const universalify = require("universalify");
 
 // this keeps a map of:
 // fileName => jsonData
 // in case reading ends of with a corrupted object
-let dataMap: any = {};
+const dataMap: any = {};
 
 export async function _makeDirSync(file: string) {
   if (!_fs.existsSync(file)) {

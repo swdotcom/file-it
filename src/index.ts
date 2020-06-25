@@ -7,8 +7,7 @@ import {
   _getJsonValue,
   _makeDirSync
 } from "./managers/file";
-const universalify = require('universalify');
-
+const universalify = require("universalify");
 
 const fileIt = {
   makeDirSync: _makeDirSync,

@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "prepare": "yarn build",
-    "test": "yarn build && mocha -r ts-node/register test/**/*.ts --reporter spec --timeout 20000 --exit"
+    "test": "yarn build && mocha -r ts-node/register test/**/*.ts --reporter spec --timeout 20000 --exit",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -32,13 +34,13 @@
     "@types/node": "^14.0.14",
     "chai": "^4.2.0",
     "mocha": "^8.0.1",
+    "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "standard": "^14.3.4",
     "ts-node": "^8.10.2",
+    "tslint": "^6.1.2",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.9.5"
-  },
-  "optionalDependencies": {
-    "graceful-fs": "^4.2.4"
   },
   "dependencies": {
     "universalify": "^1.0.0"

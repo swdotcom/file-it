@@ -1,9 +1,9 @@
 const expect = require("chai").expect;
 const fileIt = require("../../src");
-const fs = require('fs')
-const os = require('os')
-const path = require('path')
-const rimraf = require('rimraf')
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const rimraf = require('rimraf');
 
 describe("Json Update Tests", function () {
   let TEST_DIR: string = "";
