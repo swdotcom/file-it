@@ -25,7 +25,8 @@ API
 
 * [`setJsonValue(filename, key, value, [options])`](#setjsonvalue-filename-key-value-options)
 * [`getJsonValue(filename, key)`](#getjsonvaluefilename-key)
-* [`getJsonLinesSync(filename)`](#getjsonlinessyncfilename)
+* [`readJsonArraySync(filename)`](#readjsonarraysyncfilename)
+* [`readJsonLinesSync(filename)`](#readjsonlinessyncfilename)
 * [`readContentFile(filename)`](#readcontentfilefilename)
 * [`readContentFileSync(filename)`](#readcontentfilesyncfilename)
 * [`readJsonFile(filename, callback)`](#readjsonfilefilename-options-callback)
@@ -66,7 +67,24 @@ console.log("val: ", val); // prints out "universe"
 
 ----
 
-### getJsonLinesSync(filename)
+### readJsonArraySync(filename)
+
+`filename` the full file path
+  - `throws` If `JSON.parse` throws an error, pass this error to the callback
+
+
+```js
+const fileIt = require('file-it')
+const file = '/tmp/jsonArrayFile.json'
+fileIt.readJsonArraySync(file, function (err, data) {
+  if (err) console.error(err)
+  else console.log(data)
+})
+```
+
+----
+
+### readJsonLinesSync(filename)
 
 `filename` the full file path
   - `throws` If `JSON.parse` throws an error, pass this error to the callback
@@ -75,7 +93,7 @@ console.log("val: ", val); // prints out "universe"
 ```js
 const fileIt = require('file-it')
 const file = '/tmp/linesOfJsonData.json'
-fileIt.getJsonLinesSync(file, function (err, data) {
+fileIt.readJsonLinesSync(file, function (err, data) {
   if (err) console.error(err)
   else console.log(data)
 })

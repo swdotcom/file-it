@@ -196,9 +196,6 @@ export function _setJsonValue(file: string, key: string, value: any, options: an
  * @param key
  */
 export function _getJsonValue(file: string, key: string): any {
-  if (!fs.existsSync(file)) {
-    return null;
-  }
   // get the value based on the key
   const jsonObj: any = _readJsonFileSync(file);
 
@@ -209,27 +206,40 @@ export function _getJsonValue(file: string, key: string): any {
   return jsonObj[key];
 }
 
+export function _readJsonArraySync(file: string): any[] {
+  // get the value based on the key
+  const jsonObj: any = _readJsonFileSync(file);
+  if (jsonObj) {
+    if (Array.isArray(jsonObj)) {
+      return jsonObj;
+    } else {
+      return [jsonObj];
+    }
+  }
+  return [];
+}
+
 /**
  * Return a JSON array from a file containing lines of JSON
  * @param file
  */
-export function _getJsonLinesSync(file: string): any[] {
+export function _readJsonLinesSync(file: string): any[] {
   let jsonArray: any = [];
   if (fs.existsSync(file)) {
-    const content = fs.readFileSync(file, { encoding: "utf8" }).toString();
+    const content = _readContentFileSync(file);
     if (content) {
       try {
         jsonArray = content
           .split(/\r?\n/)
           // parse each line to JSON
-          .map((item) => {
+          .map((item: string) => {
             if (item) {
               return JSON.parse(item);
             }
             return null;
           })
           // make sure we don't return any null lines
-          .filter((item) => item);
+          .filter((item: string) => item);
       } catch (err) {
         err.message = `${file}: ${err.message}`;
         throw err;
