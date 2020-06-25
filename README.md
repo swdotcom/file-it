@@ -26,8 +26,12 @@ API
 * [`setJsonValue(filename, key, value, [options])`](#setjsonvalue-filename-key-value-options)
 * [`getJsonValue(filename, key)`](#getjsonvaluefilename-key)
 * [`getJsonLinesSync(filename)`](#getjsonlinessyncfilename)
+* [`readContentFile(filename)`]
+* [`readContentFileSync(filename)`]
 * [`readJsonFile(filename, callback)`](#readjsonfilefilename-options-callback)
 * [`readJsonFileSync(filename)`](#readjsonfilesyncfilename)
+* [`writeContentFileAsync(file, content, options)`]
+* [`writeContentFileSync(file, content, options)`]
 * [`writeJsonFile(filename, obj, [options], callback)`](#writejsonfilefilename-obj-options-callback)
 * [`writeJsonFileSync(filename, obj, [options])`](#writejsonfilesyncfilename-obj-options)
 
@@ -73,6 +77,31 @@ fileIt.getJsonLinesSync(file, function (err, obj) {
 })
 ```
 
+### readContentFile(filename)
+
+`filename` the full file path
+  - `throws` If `JSON.parse` throws an error, pass this error to the callback
+
+```js
+const fileIt = require('file-it')
+const file = '/tmp/data.json'
+fileIt.readContentFile(file, function (err, obj) {
+  if (err) console.error(err)
+  console.dir(obj)
+})
+```
+
+### readContentFileSync(filename)
+
+`filename` the full file path
+  - `throws` If `JSON.parse` throws an error, pass this error to the callback
+
+```js
+const fileIt = require('file-it')
+const file = '/tmp/data.json'
+console.log(fileIt.readContentFileSync(file))
+```
+
 ### readJsonFile(filename)
 
 `filename` the full file path
@@ -100,7 +129,7 @@ fileIt.readJsonFile(file)
 
 ----
 
-### readJsonFileSync(filename, [options])
+### readJsonFileSync(filename)
 
 - `throws` If an error is encountered reading or parsing the file, throw the error
 
@@ -108,7 +137,7 @@ fileIt.readJsonFile(file)
 const fileIt = require('file-it')
 const file = '/tmp/data.json'
 
-console.dir(fileIt.readJsonFileSync(file))
+console.log(fileIt.readJsonFileSync(file))
 ```
 
 ----

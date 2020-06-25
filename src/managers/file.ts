@@ -5,7 +5,7 @@ import universalify = require("universalify");
 // this keeps a map of:
 // fileName => jsonData
 // in case reading ends of with a corrupted object
-const dataMap: any = {};
+const contentMap: any = {};
 
 export async function _makeDirSync(file: string) {
   if (!fs.existsSync(file)) {
@@ -18,26 +18,51 @@ export async function _makeDirSync(file: string) {
  * @param file
  * @param options
  */
+export async function _readContentFileAsync(file: string): Promise<any> {
+  if (!fs.existsSync(file)) {
+    return null;
+  }
+
+  let content: any = await universalify.fromCallback(fs.readFile)(file, {
+    encoding: "utf8",
+  });
+
+  return content;
+}
+
+/**
+ * Read a file asynchronously
+ * @param file
+ * @param options
+ */
 export async function _readJsonFileAsync(file: string): Promise<any> {
   if (!fs.existsSync(file)) {
     return null;
   }
 
-  let data: any = await universalify.fromCallback(fs.readFile)(file, {
+  let content: any = await universalify.fromCallback(fs.readFile)(file, {
     encoding: "utf8",
   });
-  // remove byte order mark
-  data = cleanJsonString(data);
 
-  let obj: any;
-  try {
-    obj = JSON.parse(data);
-  } catch (err) {
-    err.message = `${file}: ${err.message}`;
-    throw err;
+  return parseJsonContent(file, content);
+}
+
+export function _readContentFileSync(file: string): any {
+  if (!fs.existsSync(file)) {
+    return null;
   }
 
-  return obj;
+  try {
+    let content: string = fs.readFileSync(file, { encoding: "utf8" });
+    return content
+  } catch (err) {
+    const content = tryCachedContent(file, false);
+    if (!content) {
+      err.message = `${file}: ${err.message}`;
+      throw err;
+    }
+    return content;
+  }
 }
 
 /**
@@ -45,49 +70,106 @@ export async function _readJsonFileAsync(file: string): Promise<any> {
  * @param file
  * @param options
  */
-export function _readJsonFileSync(file: string) {
+export function _readJsonFileSync(file: string): any {
   if (!fs.existsSync(file)) {
     return null;
   }
 
   try {
     let content: string = fs.readFileSync(file, { encoding: "utf8" });
-    content = cleanJsonString(content);
-    return JSON.parse(content);
+    return parseJsonContent(file, content);
   } catch (err) {
-    err.message = `${file}: ${err.message}`;
-    throw err;
+    const obj = tryCachedContent(file);
+    if (!obj) {
+      err.message = `${file}: ${err.message}`;
+      throw err;
+    }
+    return obj;
   }
 }
 
+function parseJsonContent(file: string, content: any) {
+  // remove byte order mark
+  content = cleanJsonString(content);
+
+  let obj: any;
+  try {
+    obj = JSON.parse(content);
+  } catch (err) {
+    obj = tryCachedContent(file);
+    if (!obj) {
+      err.message = `${file}: ${err.message}`;
+      throw err;
+    }
+  }
+  return obj;
+}
+
+function tryCachedContent(file: string, isJson: boolean = true) {
+  let obj: any;
+  let content: string = contentMap[file];
+  if (content) {
+    content = cleanJsonString(content);
+    if (isJson) {
+      try {
+        obj = JSON.parse(content);
+      } catch (err) {
+        err.message = `${file}: ${err.message}`;
+        throw err;
+      }
+    } else {
+      obj = content;
+    }
+  }
+  // save the cached content
+  _writeContentFileSync(file, content);
+
+  return obj;
+}
+
 /**
- * Write a file asynchronously
+ * Write a content file asynchronously
+ */
+export async function _writeContentFileAsync(file: string, content: string, options: any = {}) {
+  contentMap[file] = content;
+  if (!options.encoding) {
+    options = {
+      ...options,
+      encoding: "utf8"
+    }
+  }
+  await universalify.fromCallback(fs.writeFile)(file, content, options);
+}
+
+/**
+ * Write a json file asynchronously
  */
 export async function _writeJsonFileAsync(file: string, obj: any, options: any = {}) {
-  dataMap[file] = obj;
-  const str: string = jsonStringify(obj, options);
-  if (!options.encoding) {
-    options = {
-      ...options,
-      encoding: "utf8"
-    }
-  }
-  await universalify.fromCallback(fs.writeFile)(file, str, options);
+  const content: string = jsonStringify(obj, options);
+  _writeContentFileAsync(file, content, options);
 }
 
 /**
- * Write a file synchronously
+ * Write a content file synchronously
  */
-export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
-  dataMap[file] = obj;
-  const str: string = jsonStringify(obj, options);
+export function _writeContentFileSync(file: string, content: string, options: any = {}) {
+  contentMap[file] = content;
   if (!options.encoding) {
     options = {
       ...options,
       encoding: "utf8"
     }
   }
-  return fs.writeFileSync(file, str, options);
+  return fs.writeFileSync(file, content, options);
+}
+
+/**
+ * Write a json file synchronously
+ */
+export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
+  const content: string = jsonStringify(obj, options);
+  contentMap[file] = content;
+  return _writeContentFileSync(file, content, options);
 }
 
 /**
@@ -95,15 +177,14 @@ export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
  */
 export function _setJsonValue(file: string, key: string, value: any, options: any = {}) {
   // get the json and set/update
-  let jsonObj: any = _readJsonFileSync(file) || getCachedData(file);
+  let jsonObj: any = _readJsonFileSync(file);
+
 
   if (!jsonObj) {
     jsonObj = {};
   }
 
   jsonObj[key] = value;
-
-  dataMap[file] = jsonObj;
 
   // write the update
   _writeJsonFileSync(file, jsonObj, options);
@@ -119,7 +200,7 @@ export function _getJsonValue(file: string, key: string): any {
     return null;
   }
   // get the value based on the key
-  const jsonObj: any = _readJsonFileSync(file) || getCachedData(file);
+  const jsonObj: any = _readJsonFileSync(file);
 
   if (!jsonObj) {
     return null;
@@ -156,8 +237,4 @@ export function _getJsonLinesSync(file: string): any[] {
     }
   }
   return jsonArray;
-}
-
-function getCachedData(file: string): any {
-  return dataMap[file];
 }
