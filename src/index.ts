@@ -5,7 +5,7 @@ import {
   _writeFileSync,
   _setJsonValue,
   _getJsonValue,
-  _makeDirSync
+  _makeDirSync,
 } from "./managers/file";
 const universalify = require("universalify");
 
@@ -16,7 +16,7 @@ const fileIt = {
   writeFile: universalify.fromPromise(_writeFileAsync),
   writeFileSync: _writeFileSync,
   setJsonValue: _setJsonValue,
-  getJsonValue: _getJsonValue
-}
+  getJsonValue: _getJsonValue,
+};
 
-module.exports = fileIt
+module.exports = fileIt;

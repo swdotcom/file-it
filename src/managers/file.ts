@@ -16,11 +16,13 @@ export async function _makeDirSync(file: string) {
 
 /**
  * Read a file asynchronously
- * @param file 
- * @param options 
+ * @param file
+ * @param options
  */
 export async function _readFileAsync(file: string): Promise<any> {
-  let data: any = await universalify.fromCallback(_fs.readFile)(file, { encoding: "utf8" });
+  let data: any = await universalify.fromCallback(_fs.readFile)(file, {
+    encoding: "utf8",
+  });
   // remove byte order mark
   data = cleanJsonString(data);
 
@@ -32,13 +34,13 @@ export async function _readFileAsync(file: string): Promise<any> {
     throw err;
   }
 
-  return obj
+  return obj;
 }
 
 /**
  * Read a file synchronously
- * @param file 
- * @param options 
+ * @param file
+ * @param options
  */
 export function _readFileSync(file: string) {
   try {
@@ -75,7 +77,7 @@ export function _setJsonValue(file: string, key: string, value: any, options: an
   const jsonObj: any = _readFileSync(file) || getCachedData(file);
 
   if (!jsonObj) {
-    throw { message: `Error updating ${file}. Missing or content is malformed` }
+    throw { message: `Error updating ${file}. Missing or content is malformed` };
   }
 
   jsonObj[key] = value;
@@ -86,15 +88,15 @@ export function _setJsonValue(file: string, key: string, value: any, options: an
 
 /**
  * Get a json element value
- * @param file 
- * @param key 
+ * @param file
+ * @param key
  */
 export function _getJsonValue(file: string, key: string): any {
   // get the value based on the key
   const jsonObj: any = _readFileSync(file) || getCachedData(file);
 
   if (!jsonObj) {
-    throw { message: `Error updating ${file}. Missing or content is malformed` }
+    throw { message: `Error updating ${file}. Missing or content is malformed` };
   }
 
   return jsonObj[key];

@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "Easily read/write/update JSON files",
   "main": "index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "prepare": "yarn build",
     "test": "yarn build && mocha -r ts-node/register test/**/*.ts --reporter spec --timeout 20000 --exit",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json"
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json",
+    "version": "yarn format && git add -A src",
+    "prepublishOnly": "yarn test && yarn run lint"
   },
   "repository": {
     "type": "git",
