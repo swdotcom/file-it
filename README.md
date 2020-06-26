@@ -31,6 +31,7 @@ API
 * [`readContentFileSync(filename)`](#readcontentfilesyncfilename)
 * [`readJsonFile(filename, callback)`](#readjsonfilefilename-options-callback)
 * [`readJsonFileSync(filename)`](#readjsonfilesyncfilename)
+* [`appendJsonFileSync(filename, content, [options])`](#appendjsonfilesyncfilename-content-options)
 * [`writeContentFile(filename, content, callback)`](#writecontentfilefilename-content-callback)
 * [`writeContentFileSync(filename, content)`](#writecontentfilesyncfilename-content)
 * [`writeJsonFile(filename, obj, [options], callback)`](#writejsonfilefilename-obj-options-callback)
@@ -356,7 +357,7 @@ fileIt.writeJsonFileSync(file, obj, { flag: 'a' })
 
 * `filename`: the full file path
 * `attribute`: the name of the attribute within a json element
-* `direction`: the sort direction ["asc" | "desc"]
+* `direction`: the sort direction ["asc" | "desc"] - default is desc
 
 ```js
 const fileIt = require('file-it')

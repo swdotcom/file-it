@@ -260,6 +260,12 @@ export function _readJsonLinesSync(file: string): any[] {
   return jsonArray;
 }
 
+/**
+ * 
+ * @param file 
+ * @param attribute 
+ * @param direction desc by default
+ */
 export function _findSortedJsonElement(file: string, attribute: string, direction: string = "asc") {
   const jsonArray = _readJsonArraySync(file);
   if (jsonArray && jsonArray.length) {
