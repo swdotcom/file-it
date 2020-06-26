@@ -30,5 +30,4 @@ describe("Json Update Tests", function () {
     chai.expect(val).to.equal("world");
   });
 
-
 });

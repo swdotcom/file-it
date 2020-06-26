@@ -105,7 +105,6 @@ fileIt.readJsonLinesSync(file, function (err, data) {
 ### readContentFile(filename)
 
 * `filename` the full file path
-  - `throws` If `JSON.parse` throws an error, pass this error to the callback
 
 ```js
 const fileIt = require('file-it')
@@ -121,7 +120,6 @@ fileIt.readContentFile(file, function (err, data) {
 ### readContentFileSync(filename)
 
 * `filename` the full file path
-  - `throws` If `JSON.parse` throws an error, pass this error to the callback
 
 ```js
 const fileIt = require('file-it')
@@ -162,7 +160,7 @@ fileIt.readJsonFile(file)
 
 * `filename`: the full file path
 * `content`: The string object to write
-- `throws` If an error is encountered reading or parsing the file, throw the error
+  - `throws` If an error is encountered reading or parsing the file, throw the error
 
 ```js
 const fileIt = require('file-it')
@@ -170,6 +168,27 @@ const file = '/tmp/data.json'
 
 console.log(fileIt.readJsonFileSync(file))
 ```
+
+----
+
+### appendJsonFileSync(filename, content, [options])
+
+* `filename`: the full file path
+* `obj`: The json object to write
+* `options`: Pass in any [`fs.appendFileSync`](https://nodejs.org/api/fs.html#fs_fs_appendfilesync_path_data_options) options or set `replacer` for a [JSON replacer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify). Can also pass in `spaces` and override `EOL` string.
+
+```js
+const fileIt = require('file-it')
+
+const file = '/tmp/data.json'
+const content = "hello world"
+
+fileIt.writeContentFile(filename, content, function (err) {
+  if (err) console.error(err)
+})
+```
+
+----
 
 ----
 

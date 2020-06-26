@@ -1,6 +1,7 @@
 import chai = require("chai");
 import fs = require("fs");
 import path = require("path");
+import { expect } from "chai";
 
 const fileIt = require("../../src");
 const rimraf = require("rimraf");
@@ -36,5 +37,16 @@ describe("Json FileIt Write Tests", function () {
       chai.expect(err).to.be.null;
     });
   });
+
+  it("Validate appending lines of json", async function () {
+    const file = path.join(TEST_DIR, 'tmp.json');
+    const obj1 = { hello: "world" };
+    await fileIt.writeJsonFileSync(file, obj1);
+    const obj2 = { foo: "baz" };
+    await fileIt.writeJsonFileSync(file, obj2, { flag: "a" });
+
+    const jsonArray = fileIt.readJsonLinesSync(file);
+    expect(jsonArray.length).to.equal(2);
+  })
 
 });

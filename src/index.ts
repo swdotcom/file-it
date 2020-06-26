@@ -1,4 +1,5 @@
 import {
+  _appendJsonFileSync,
   _readContentFileAsync,
   _readContentFileSync,
   _readJsonFileAsync,
@@ -18,6 +19,7 @@ import universalify = require("universalify");
 
 const fileIt = {
   makeDirSync: _makeDirSync,
+  appendJsonFileSync: _appendJsonFileSync,
   readContentFileAsync: universalify.fromPromise(_readContentFileAsync),
   readContentFileSync: _readContentFileSync,
   readJsonFile: universalify.fromPromise(_readJsonFileAsync),

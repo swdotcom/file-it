@@ -47,6 +47,10 @@ export async function _readJsonFileAsync(file: string): Promise<any> {
   return parseJsonContent(file, content);
 }
 
+/**
+ * parse and return (throw an err if exception is caught
+ * @param file 
+ */
 export function _readContentFileSync(file: string): any {
   if (!fs.existsSync(file)) {
     return null;
@@ -131,7 +135,6 @@ function tryCachedContent(file: string, isJson: boolean = true) {
  * Write a content file asynchronously
  */
 export async function _writeContentFileAsync(file: string, content: string, options: any = {}) {
-  contentMap[file] = content;
   if (!options.encoding) {
     options = {
       ...options,
@@ -153,14 +156,13 @@ export async function _writeJsonFileAsync(file: string, obj: any, options: any =
  * Write a content file synchronously
  */
 export function _writeContentFileSync(file: string, content: string, options: any = {}) {
-  contentMap[file] = content;
   if (!options.encoding) {
     options = {
       ...options,
       encoding: "utf8"
     }
   }
-  return fs.writeFileSync(file, content, options);
+  fs.writeFileSync(file, content, options);
 }
 
 /**
@@ -168,8 +170,18 @@ export function _writeContentFileSync(file: string, content: string, options: an
  */
 export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
   const content: string = jsonStringify(obj, options);
-  contentMap[file] = content;
   return _writeContentFileSync(file, content, options);
+}
+
+export function _appendJsonFileSync(file: string, obj: any, options: any = {}) {
+  const content: string = jsonStringify(obj, options);
+  if (!options.encoding) {
+    options = {
+      ...options,
+      encoding: "utf8"
+    }
+  }
+  return fs.appendFileSync(file, content, options);
 }
 
 /**
@@ -178,7 +190,6 @@ export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
 export function _setJsonValue(file: string, key: string, value: any, options: any = {}) {
   // get the json and set/update
   let jsonObj: any = _readJsonFileSync(file);
-
 
   if (!jsonObj) {
     jsonObj = {};
