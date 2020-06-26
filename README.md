@@ -175,16 +175,16 @@ console.log(fileIt.readJsonFileSync(file))
 ### appendJsonFileSync(filename, content, [options])
 
 * `filename`: the full file path
-* `obj`: The json object to write
+* `obj`: The json object to append to the file
 * `options`: Pass in any [`fs.appendFileSync`](https://nodejs.org/api/fs.html#fs_fs_appendfilesync_path_data_options) options or set `replacer` for a [JSON replacer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify). Can also pass in `spaces` and override `EOL` string.
 
 ```js
 const fileIt = require('file-it')
 
 const file = '/tmp/data.json'
-const content = "hello world"
+const obj = { hello: 'World' }
 
-fileIt.writeContentFile(filename, content, function (err) {
+fileIt.appendJsonFileSync(filename, content, function (err) {
   if (err) console.error(err)
 })
 ```
@@ -201,7 +201,7 @@ fileIt.writeContentFile(filename, content, function (err) {
 ```js
 const fileIt = require('file-it')
 
-const file = '/tmp/data.json'
+const file = '/tmp/data.txt'
 const content = "hello world"
 
 fileIt.writeContentFile(filename, content, function (err) {
@@ -217,7 +217,7 @@ fileIt.writeContentFile(filename, content, function (err) {
 ```js
 const fileIt = require('file-it')
 
-const file = '/tmp/data.json'
+const file = '/tmp/data.txt'
 const content = "hello world"
 
 fileIt.writeContentFile(filename, content)
