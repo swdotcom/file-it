@@ -1,6 +1,6 @@
 {
   "name": "file-it",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Easily read/write/update JSON files",
   "main": "dist",
   "types": "dist/index.d.js",

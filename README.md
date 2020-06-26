@@ -41,9 +41,9 @@ API
 
 ### setJsonValue(filename, key, value, [options])
 
-`filename` the full file path
-`key` the name of the element in the json file
-`value` the value you want to set
+* `filename` the full file path
+* `key` the name of the element in the json file
+* `value` the value you want to set
 
 ```js
 const fileIt = require('file-it')
@@ -55,8 +55,8 @@ fileIt.setJsonValue(file, "hello", "universe", {spaces: 2});
 
 ### getJsonValue(filename, key)
 
-`filename` the full file path
-`key` the name of the element in the json file
+* `filename` the full file path
+* `key` the name of the element in the json file
 
 ```js
 const fileIt = require('file-it')
@@ -70,7 +70,7 @@ console.log("val: ", val); // prints out "universe"
 
 ### readJsonArraySync(filename)
 
-`filename` the full file path
+* `filename` the full file path
   - `throws` If `JSON.parse` throws an error, pass this error to the callback
 
 
@@ -87,7 +87,7 @@ fileIt.readJsonArraySync(file, function (err, data) {
 
 ### readJsonLinesSync(filename)
 
-`filename` the full file path
+* `filename` the full file path
   - `throws` If `JSON.parse` throws an error, pass this error to the callback
 
 
@@ -104,7 +104,7 @@ fileIt.readJsonLinesSync(file, function (err, data) {
 
 ### readContentFile(filename)
 
-`filename` the full file path
+* `filename` the full file path
   - `throws` If `JSON.parse` throws an error, pass this error to the callback
 
 ```js
@@ -120,7 +120,7 @@ fileIt.readContentFile(file, function (err, data) {
 
 ### readContentFileSync(filename)
 
-`filename` the full file path
+* `filename` the full file path
   - `throws` If `JSON.parse` throws an error, pass this error to the callback
 
 ```js
@@ -133,7 +133,7 @@ console.log(fileIt.readContentFileSync(file))
 
 ### readJsonFile(filename)
 
-`filename` the full file path
+* `filename` the full file path
   - `throws` If `JSON.parse` throws an error, pass this error to the callback
 
 
@@ -160,6 +160,8 @@ fileIt.readJsonFile(file)
 
 ### readJsonFileSync(filename)
 
+* `filename`: the full file path
+* `content`: The string object to write
 - `throws` If an error is encountered reading or parsing the file, throw the error
 
 ```js
@@ -173,6 +175,8 @@ console.log(fileIt.readJsonFileSync(file))
 
 ### writeContentFile(filename, content, callback)
 
+* `filename`: the full file path
+* `content`: The string object to write
 
 ```js
 const fileIt = require('file-it')
@@ -203,7 +207,9 @@ fileIt.writeContentFile(filename, content)
 
 ### writeJsonFile(filename, obj, [options], callback)
 
-`options`: Pass in any [`fs.writeFile`](https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback) options or set `replacer` for a [JSON replacer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify). Can also pass in `spaces` and override `EOL` string.
+* `filename`: the full file path
+* `obj`: The json object to write
+* `options`: Pass in any [`fs.writeFile`](https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback) options or set `replacer` for a [JSON replacer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify). Can also pass in `spaces` and override `EOL` string.
 
 
 ```js
@@ -277,7 +283,9 @@ fileIt.writeJsonFile(file, obj, { flag: 'a' }, function (err) {
 
 ### writeJsonFileSync(filename, obj, [options])
 
-`options`: Pass in any [`fs.writeFileSync`](https://nodejs.org/api/fs.html#fs_fs_writefilesync_file_data_options) options or set `replacer` for a [JSON replacer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify). Can also pass in `spaces` and override `EOL` string.
+* `filename`: the full file path
+* `obj`: The json object to write
+* `options`: Pass in any [`fs.writeFileSync`](https://nodejs.org/api/fs.html#fs_fs_writefilesync_file_data_options) options or set `replacer` for a [JSON replacer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify). Can also pass in `spaces` and override `EOL` string.
 
 ```js
 const fileIt = require('file-it')
@@ -327,8 +335,9 @@ fileIt.writeJsonFileSync(file, obj, { flag: 'a' })
 
 ### findSortedJsonElement(filename, attribute, direction?)
 
-`attribute`: the name of the attribute within a json element
-`direction`: the sort direction ["asc" | "desc"]
+* `filename`: the full file path
+* `attribute`: the name of the attribute within a json element
+* `direction`: the sort direction ["asc" | "desc"]
 
 ```js
 const fileIt = require('file-it')
