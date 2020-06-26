@@ -1,5 +1,3 @@
-# Easily read/write/update JSON files
-
 file-it
 ================
 
@@ -24,19 +22,33 @@ API
 ---
 
 * [`setJsonValue(filename, key, value, [options])`](#setjsonvalue-filename-key-value-options)
+  - create or update a top level json value
 * [`getJsonValue(filename, key)`](#getjsonvaluefilename-key)
+  - fetch a top level json value
 * [`readJsonArraySync(filename)`](#readjsonarraysyncfilename)
+  - returns a json array object from a stringified json array file
 * [`readJsonLinesSync(filename)`](#readjsonlinessyncfilename)
+  - returns a json array object from a file containing stringified objects appended in a file
 * [`readContentFile(filename)`](#readcontentfilefilename)
+  - returns the string content of a file asynchronously
 * [`readContentFileSync(filename)`](#readcontentfilesyncfilename)
+  - returns the string content of a file synchronously
 * [`readJsonFile(filename, callback)`](#readjsonfilefilename-options-callback)
+  - returns a json object from a file asynchronously
 * [`readJsonFileSync(filename)`](#readjsonfilesyncfilename)
-* [`appendJsonFileSync(filename, content, [options])`](#appendjsonfilesyncfilename-content-options)
+  - returns a json object from a file synchronously
+* [`appendJsonFileSync(filename, obj, [options])`](#appendjsonfilesyncfilename-obj-options)
+  - append a json object to a file synchronously
 * [`writeContentFile(filename, content, callback)`](#writecontentfilefilename-content-callback)
+  - write string content to a file asynchronously
 * [`writeContentFileSync(filename, content)`](#writecontentfilesyncfilename-content)
+  - write string content to a file synchronously
 * [`writeJsonFile(filename, obj, [options], callback)`](#writejsonfilefilename-obj-options-callback)
+  - write a json object to a file asynchronously
 * [`writeJsonFileSync(filename, obj, [options])`](#writejsonfilesyncfilename-obj-options)
+  - write a json object to a file synchronously
 * [`findSortedJsonElement(filename, attribute, direction)`](#findsortedjsonelementfilename-attribute-direction)
+  - returns the top element sorted by the specified object attribute based on sort direction. "desc" is used by default
 
 ----
 
@@ -172,7 +184,7 @@ console.log(fileIt.readJsonFileSync(file))
 
 ----
 
-### appendJsonFileSync(filename, content, [options])
+### appendJsonFileSync(filename, obj, [options])
 
 * `filename`: the full file path
 * `obj`: The json object to append to the file

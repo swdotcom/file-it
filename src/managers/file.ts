@@ -141,7 +141,11 @@ export async function _writeContentFileAsync(file: string, content: string, opti
       encoding: "utf8"
     }
   }
-  await universalify.fromCallback(fs.writeFile)(file, content, options);
+  const result = await universalify.fromCallback(fs.writeFile)(file, content, options);
+
+  updateContentMap(file, content, options);
+
+  return result;
 }
 
 /**
@@ -162,7 +166,12 @@ export function _writeContentFileSync(file: string, content: string, options: an
       encoding: "utf8"
     }
   }
-  fs.writeFileSync(file, content, options);
+
+  const result = fs.writeFileSync(file, content, options);
+
+  updateContentMap(file, content, options);
+
+  return result;
 }
 
 /**
@@ -181,7 +190,13 @@ export function _appendJsonFileSync(file: string, obj: any, options: any = {}) {
       encoding: "utf8"
     }
   }
-  return fs.appendFileSync(file, content, options);
+
+  const result = fs.appendFileSync(file, content, options);
+
+  // set the flag to append as this is the append request
+  updateContentMap(file, content, { flag: "a" });
+
+  return result;
 }
 
 /**
@@ -287,4 +302,15 @@ export function _findSortedJsonElement(file: string, attribute: string, directio
     return jsonArray[0];
   }
   return null;
+}
+
+function updateContentMap(file: string, content: string, options: any) {
+  if (options.flag && options.flag === "a") {
+    _readContentFileAsync(file).then(result => {
+      contentMap[file] = result;
+    });
+  } else {
+    // overwrite what we have
+    contentMap[file] = content;
+  }
 }
