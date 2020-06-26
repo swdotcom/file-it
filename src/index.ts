@@ -12,6 +12,7 @@ import {
   _makeDirSync,
   _readJsonArraySync,
   _readJsonLinesSync,
+  _findSortedJsonElement
 } from "./managers/file";
 import universalify = require("universalify");
 
@@ -29,6 +30,7 @@ const fileIt = {
   getJsonValue: _getJsonValue,
   readJsonArraySync: _readJsonArraySync,
   readJsonLinesSync: _readJsonLinesSync,
+  findSortedJsonElement: _findSortedJsonElement
 };
 
 module.exports = fileIt;

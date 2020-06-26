@@ -35,6 +35,7 @@ API
 * [`writeContentFileSync(filename, content)`](#writecontentfilesyncfilename-content)
 * [`writeJsonFile(filename, obj, [options], callback)`](#writejsonfilefilename-obj-options-callback)
 * [`writeJsonFileSync(filename, obj, [options])`](#writejsonfilesyncfilename-obj-options)
+* [`findSortedJsonElement(filename, attribute, direction)`](#findsortedjsonelementfilename-attribute-direction)
 
 ----
 
@@ -320,6 +321,29 @@ const file = '/tmp/data.json'
 const obj = { hello: 'World' }
 
 fileIt.writeJsonFileSync(file, obj, { flag: 'a' })
+```
+
+----
+
+### findSortedJsonElement(filename, attribute, direction?)
+
+`attribute`: the name of the attribute within a json element
+`direction`: the sort direction ["asc" | "desc"]
+
+```js
+const fileIt = require('file-it')
+
+const file = '/tmp/data.json'
+
+const topElement = fileIt.findSortedJsonElement(file, "count")
+```
+
+```js
+const fileIt = require('file-it')
+
+const file = '/tmp/data.json'
+
+const bottomElement = fileIt.findSortedJsonElement(file, "count", "asc")
 ```
 
 

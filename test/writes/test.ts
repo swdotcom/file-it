@@ -5,7 +5,7 @@ import path = require("path");
 const fileIt = require("../../src");
 const rimraf = require("rimraf");
 
-describe("Json Update Tests", function () {
+describe("Json FileIt Write Tests", function () {
   let TEST_DIR: string = "";
 
   beforeEach((done) => {
@@ -22,13 +22,19 @@ describe("Json Update Tests", function () {
     done();
   });
 
-  it("Validate updating a json file", function () {
+  it("Validate content write", function () {
     const file = path.join(TEST_DIR, 'tmp.json');
-    fileIt.writeJsonFileSync(file, { hello: "there" }, { spaces: 2 });
-    fileIt.setJsonValue(file, "hello", "world", { spaces: 2 });
-    const val = fileIt.getJsonValue(file, "hello");
-    chai.expect(val).to.equal("world");
+    fileIt.writeContentFileSync(file, "Hello World");
+    const contentSaved = fileIt.readContentFileSync(file);
+    chai.expect(contentSaved).to.equal("Hello World");
   });
 
+  it("Validate content write", async function () {
+    const file = path.join(TEST_DIR, 'tmp.json');
+
+    await fileIt.writeContentFile(file, "Hello World", function (err: any) {
+      chai.expect(err).to.be.null;
+    });
+  });
 
 });

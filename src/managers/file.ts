@@ -248,3 +248,26 @@ export function _readJsonLinesSync(file: string): any[] {
   }
   return jsonArray;
 }
+
+export function _findSortedJsonElement(file: string, attribute: string, direction: string = "asc") {
+  const jsonArray = _readJsonArraySync(file);
+  if (jsonArray && jsonArray.length) {
+    if (direction.toLowerCase() === "desc") {
+      // desc
+      if (attribute) {
+        jsonArray.sort((a: any, b: any) => a[attribute] - b[attribute]);
+      } else {
+        jsonArray.sort((a: any, b: any) => a - b);
+      }
+    } else {
+      // asc
+      if (attribute) {
+        jsonArray.sort((a: any, b: any) => b[attribute] - a[attribute]);
+      } else {
+        jsonArray.sort((a: any, b: any) => b - a);
+      }
+    }
+    return jsonArray[0];
+  }
+  return null;
+}
