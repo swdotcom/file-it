@@ -1,4 +1,3 @@
-import chai = require("chai");
 import fs = require("fs");
 import path = require("path");
 import { expect } from "chai";
@@ -28,7 +27,7 @@ describe("Json Update Tests", function () {
     fileIt.writeJsonFileSync(file, { hello: "there" }, { spaces: 2 });
     fileIt.setJsonValue(file, "hello", "world", { spaces: 2 });
     const val = fileIt.getJsonValue(file, "hello");
-    chai.expect(val).to.equal("world");
+    expect(val).to.equal("world");
   });
 
   it("Validate updating multiple attributes", async function () {
@@ -38,15 +37,15 @@ describe("Json Update Tests", function () {
     fileIt.setJsonValue(file, "three", 3);
 
     const set1Val = fileIt.getJsonValue(file, "one");
-    chai.expect(set1Val).to.equal(1);
+    expect(set1Val).to.equal(1);
     const set2Val = fileIt.getJsonValue(file, "two");
-    chai.expect(set2Val).to.equal(2);
+    expect(set2Val).to.equal(2);
     const set3Val = fileIt.getJsonValue(file, "three");
-    chai.expect(set3Val).to.equal(3);
+    expect(set3Val).to.equal(3);
   });
 
   it("Validate reading content async", async function () {
-    const file = path.join(TEST_DIR, 'tmp.json');
+    const file = path.join(TEST_DIR, 'tmp.txt');
     fileIt.setJsonValue(file, "one", 1);
     await fileIt.readContentFileAsync(file).then((content: string) => {
       expect(content.indexOf("one")).to.not.equal(-1);

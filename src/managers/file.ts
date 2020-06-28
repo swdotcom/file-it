@@ -62,8 +62,8 @@ export function _readContentFileSync(file: string): any {
   } catch (err) {
     const content = tryCachedContent(file, false);
     if (!content) {
-      err.message = `${file}: ${err.message}`;
-      throw err;
+      const message = `Error reading file content. ${file} : ${err.message}`;
+      return { error: err, message: message };
     }
     return content;
   }
@@ -85,8 +85,8 @@ export function _readJsonFileSync(file: string): any {
   } catch (err) {
     const obj = tryCachedContent(file);
     if (!obj) {
-      err.message = `${file}: ${err.message}`;
-      throw err;
+      const message = `Error reading JSON content. ${file} : ${err.message}`;
+      return { error: err, message: message };
     }
     return obj;
   }
@@ -102,8 +102,8 @@ function parseJsonContent(file: string, content: any) {
   } catch (err) {
     obj = tryCachedContent(file);
     if (!obj) {
-      err.message = `${file}: ${err.message}`;
-      throw err;
+      const message = `Error parsing JSON content. ${file} : ${err.message}`;
+      return { error: err, message: message };
     }
   }
   return obj;
@@ -118,8 +118,8 @@ function tryCachedContent(file: string, isJson: boolean = true) {
       try {
         obj = JSON.parse(content);
       } catch (err) {
-        err.message = `${file}: ${err.message}`;
-        throw err;
+        const message = `Error parsing cached JSON content. ${file} : ${err.message}`;
+        return { error: err, message: message };
       }
     } else {
       obj = content;
@@ -143,7 +143,7 @@ export async function _writeContentFileAsync(file: string, content: string, opti
   }
   const result = await universalify.fromCallback(fs.writeFile)(file, content, options);
 
-  updateContentMap(file, content, options);
+  await updateContentMap(file, content, options);
 
   return result;
 }
@@ -159,7 +159,7 @@ export async function _writeJsonFileAsync(file: string, obj: any, options: any =
 /**
  * Write a content file synchronously
  */
-export function _writeContentFileSync(file: string, content: string, options: any = {}) {
+export async function _writeContentFileSync(file: string, content: string, options: any = {}) {
   if (!options.encoding) {
     options = {
       ...options,
@@ -167,9 +167,23 @@ export function _writeContentFileSync(file: string, content: string, options: an
     }
   }
 
+  // check to see if the previous file is json
+  if (contentMap[file] && isJsonFileType(file)) {
+    try {
+      const obj = JSON.parse(contentMap[file]);
+      if (obj) {
+        // the previous file is json, make sure we can parse this content to json
+        JSON.parse(content);
+      }
+    } catch (err) {
+      const message = `Error replacing existing JSON content with non-JSON content. ${file} : ${err.message}`;
+      return { error: err, message: message };
+    }
+  }
+
   const result = fs.writeFileSync(file, content, options);
 
-  updateContentMap(file, content, options);
+  await updateContentMap(file, content, options);
 
   return result;
 }
@@ -182,7 +196,7 @@ export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
   return _writeContentFileSync(file, content, options);
 }
 
-export function _appendJsonFileSync(file: string, obj: any, options: any = {}) {
+export async function _appendJsonFileSync(file: string, obj: any, options: any = {}) {
   const content: string = jsonStringify(obj, options);
   if (!options.encoding) {
     options = {
@@ -194,7 +208,7 @@ export function _appendJsonFileSync(file: string, obj: any, options: any = {}) {
   const result = fs.appendFileSync(file, content, options);
 
   // set the flag to append as this is the append request
-  updateContentMap(file, content, { flag: "a" });
+  await updateContentMap(file, content, { flag: "a" });
 
   return result;
 }
@@ -304,13 +318,31 @@ export function _findSortedJsonElement(file: string, attribute: string, directio
   return null;
 }
 
-function updateContentMap(file: string, content: string, options: any) {
+async function updateContentMap(file: string, content: string, options: any) {
   if (options.flag && options.flag === "a") {
-    _readContentFileAsync(file).then(result => {
+    await _readContentFileAsync(file).then(result => {
       contentMap[file] = result;
     });
   } else {
     // overwrite what we have
     contentMap[file] = content;
   }
+}
+
+function getFileType(fileName: string) {
+  let fileType: string = "";
+  const lastDotIdx: number = fileName.lastIndexOf(".");
+  const len: number = fileName.length;
+  if (lastDotIdx !== -1 && lastDotIdx < len - 1) {
+    fileType = fileName.substring(lastDotIdx + 1);
+  }
+  return fileType || "";
+}
+
+function isJsonFileType(fileName: string) {
+  const fileType: string = getFileType(fileName);
+  if (fileType.toLowerCase() === "json") {
+    return true;
+  }
+  return false;
 }

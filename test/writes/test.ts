@@ -1,4 +1,3 @@
-import chai = require("chai");
 import fs = require("fs");
 import path = require("path");
 import { expect } from "chai";
@@ -24,17 +23,17 @@ describe("Json FileIt Write Tests", function () {
   });
 
   it("Validate content write", function () {
-    const file = path.join(TEST_DIR, 'tmp.json');
+    const file = path.join(TEST_DIR, 'tmp.txt');
     fileIt.writeContentFileSync(file, "Hello World");
     const contentSaved = fileIt.readContentFileSync(file);
-    chai.expect(contentSaved).to.equal("Hello World");
+    expect(contentSaved).to.equal("Hello World");
   });
 
   it("Validate content write", async function () {
-    const file = path.join(TEST_DIR, 'tmp.json');
+    const file = path.join(TEST_DIR, 'tmp.txt');
 
     await fileIt.writeContentFile(file, "Hello World", function (err: any) {
-      chai.expect(err).to.be.null;
+      expect(err).to.be.null;
     });
   });
 
