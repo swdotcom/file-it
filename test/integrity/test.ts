@@ -9,7 +9,7 @@ describe("File Integrity Tests", function () {
   let TEST_DIR: string = "";
 
   beforeEach((done) => {
-    TEST_DIR = path.join(__dirname, "..", 'fileIt-tests');
+    TEST_DIR = path.join(__dirname, "..", "fileIt-tests");
     rimraf.sync(TEST_DIR);
     if (!fs.existsSync(TEST_DIR)) {
       fs.mkdirSync(TEST_DIR);
@@ -23,7 +23,7 @@ describe("File Integrity Tests", function () {
   });
 
   it("Test json corrupt using apis", function () {
-    const file = path.join(TEST_DIR, 'tmp.json');
+    const file = path.join(TEST_DIR, "tmp.json");
     const jsonData = { integrity: "test" };
     // save a valid json
     fileIt.writeJsonFileSync(file, jsonData);
@@ -40,7 +40,7 @@ describe("File Integrity Tests", function () {
   });
 
   it("Test json corrupt using native functions", function () {
-    const file = path.join(TEST_DIR, 'tmp.json');
+    const file = path.join(TEST_DIR, "tmp.json");
     const jsonData = { integrity: "test" };
     // save a valid json
     fileIt.writeJsonFileSync(file, jsonData);
@@ -59,5 +59,20 @@ describe("File Integrity Tests", function () {
     // the json object should still be valid based on the cached content
     val = fileIt.getJsonValue(file, "integrity");
     expect(val).to.equal("test");
+  });
+
+  it("Empty file and get empty file", function () {
+    const file = path.join(TEST_DIR, "tmp.json");
+    const jsonData = { integrity: "test" };
+    // save a valid json
+    fileIt.writeJsonFileSync(file, jsonData);
+
+    // corrupt it
+    fs.writeFileSync(file, JSON.stringify({}), {
+      encoding: "utf8",
+    });
+
+    const data = fileIt.readJsonFileSync(file);
+    expect(Object.keys(data).length).to.equal(0);
   });
 });
