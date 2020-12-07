@@ -49,7 +49,7 @@ export async function _readJsonFileAsync(file: string): Promise<any> {
 
 /**
  * parse and return (throw an err if exception is caught
- * @param file 
+ * @param file
  */
 export function _readContentFileSync(file: string): any {
   if (!fs.existsSync(file)) {
@@ -58,7 +58,7 @@ export function _readContentFileSync(file: string): any {
 
   try {
     let content: string = fs.readFileSync(file, { encoding: "utf8" });
-    return content
+    return content;
   } catch (err) {
     const content = tryCachedContent(file, false);
     if (!content) {
@@ -134,12 +134,16 @@ function tryCachedContent(file: string, isJson: boolean = true) {
 /**
  * Write a content file asynchronously
  */
-export async function _writeContentFileAsync(file: string, content: string, options: any = {}) {
+export async function _writeContentFileAsync(
+  file: string,
+  content: string,
+  options: any = {},
+) {
   if (!options.encoding) {
     options = {
       ...options,
-      encoding: "utf8"
-    }
+      encoding: "utf8",
+    };
   }
   const result = await universalify.fromCallback(fs.writeFile)(file, content, options);
 
@@ -159,12 +163,16 @@ export async function _writeJsonFileAsync(file: string, obj: any, options: any =
 /**
  * Write a content file synchronously
  */
-export async function _writeContentFileSync(file: string, content: string, options: any = {}) {
+export async function _writeContentFileSync(
+  file: string,
+  content: string,
+  options: any = {},
+) {
   if (!options.encoding) {
     options = {
       ...options,
-      encoding: "utf8"
-    }
+      encoding: "utf8",
+    };
   }
 
   // check to see if the previous file is json
@@ -201,8 +209,8 @@ export async function _appendJsonFileSync(file: string, obj: any, options: any =
   if (!options.encoding) {
     options = {
       ...options,
-      encoding: "utf8"
-    }
+      encoding: "utf8",
+    };
   }
 
   const result = fs.appendFileSync(file, content, options);
@@ -290,12 +298,16 @@ export function _readJsonLinesSync(file: string): any[] {
 }
 
 /**
- * 
- * @param file 
- * @param attribute 
+ *
+ * @param file
+ * @param attribute
  * @param direction desc by default
  */
-export function _findSortedJsonElement(file: string, attribute: string, direction: string = "asc") {
+export function _findSortedJsonElement(
+  file: string,
+  attribute: string,
+  direction: string = "asc",
+) {
   const jsonArray = _readJsonArraySync(file);
   if (jsonArray && jsonArray.length) {
     if (direction.toLowerCase() === "desc") {
@@ -320,7 +332,7 @@ export function _findSortedJsonElement(file: string, attribute: string, directio
 
 async function updateContentMap(file: string, content: string, options: any) {
   if (options.flag && options.flag === "a") {
-    await _readContentFileAsync(file).then(result => {
+    await _readContentFileAsync(file).then((result) => {
       contentMap[file] = result;
     });
   } else {
