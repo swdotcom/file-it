@@ -8,7 +8,7 @@ export function jsonStringify(obj: any, options: any = {}) {
 
   const str = JSON.stringify(obj, null, options.spaces);
 
-  return str.replace(/\n/g, EOL) + EOL;
+  return str ? str.replace(/\n/g, EOL) + EOL : EOL;
 }
 
 /**

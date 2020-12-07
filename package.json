@@ -1,6 +1,6 @@
 {
   "name": "file-it",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Easily read/write/update JSON files",
   "main": "dist",
   "types": "dist/index.d.js",
@@ -46,6 +46,6 @@
   },
   "dependencies": {
     "@types/universalify": "^1.0.0",
-    "universalify": "^1.0.0"
+    "universalify": "^2.0.0"
   }
 }
