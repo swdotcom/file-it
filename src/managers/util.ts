@@ -1,3 +1,5 @@
+
+
 /**
  * Stringify the object and replace newlines with EOL
  * @param obj
@@ -6,9 +8,14 @@
 export function jsonStringify(obj: any, options: any = {}) {
   const EOL = options.EOL || "\n";
 
-  const str = JSON.stringify(obj, null, options.spaces);
+  try {
+    const str = JSON.stringify(obj, null, options.spaces);
 
-  return str ? str.replace(/\n/g, EOL) + EOL : EOL;
+    return str ? str.replace(/\n/g, EOL) + EOL : EOL;
+  } catch (err) {
+    console.log(`Error stringifying the object: ${err.message}`);
+    return null;
+  }
 }
 
 /**
@@ -16,6 +23,9 @@ export function jsonStringify(obj: any, options: any = {}) {
  * @param content
  */
 export function cleanJsonString(content: any) {
+  if (!content) {
+    return content;
+  }
   // we do this because JSON.parse would convert it to a utf8 string if encoding wasn't specified
   if (Buffer.isBuffer(content)) {
     content = content.toString("utf8");

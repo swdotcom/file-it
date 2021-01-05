@@ -157,7 +157,9 @@ export async function _writeContentFileAsync(
  */
 export async function _writeJsonFileAsync(file: string, obj: any, options: any = {}) {
   const content: string = jsonStringify(obj, options);
-  _writeContentFileAsync(file, content, options);
+  if (content) {
+    _writeContentFileAsync(file, content, options);
+  }
 }
 
 /**
@@ -201,11 +203,17 @@ export async function _writeContentFileSync(
  */
 export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
   const content: string = jsonStringify(obj, options);
-  return _writeContentFileSync(file, content, options);
+  if (content) {
+    return _writeContentFileSync(file, content, options);
+  }
+  return {error: "write content file sync error", message: ""};
 }
 
 export async function _appendJsonFileSync(file: string, obj: any, options: any = {}) {
   const content: string = jsonStringify(obj, options);
+  if (!content) {
+    return {error: "append file sync error", message: ""};
+  }
   if (!options.encoding) {
     options = {
       ...options,
