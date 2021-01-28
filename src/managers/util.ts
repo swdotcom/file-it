@@ -1,3 +1,4 @@
+import { EOL } from "os";
 
 
 /**
@@ -10,8 +11,11 @@ export function jsonStringify(obj: any, options: any = {}) {
 
   try {
     const str = JSON.stringify(obj, null, options.spaces);
+    if (str !== null && str !== undefined) {
+      return str.replace(/\n/g, EOL) + EOL;
+    }
 
-    return str ? str.replace(/\n/g, EOL) + EOL : EOL;
+    return EOL;
   } catch (err) {
     console.log(`Error stringifying the object: ${err.message}`);
     return null;
@@ -23,6 +27,7 @@ export function jsonStringify(obj: any, options: any = {}) {
  * @param content
  */
 export function cleanJsonString(content: any) {
+  const EOL = "\n";
   if (!content) {
     return content;
   }
@@ -30,8 +35,11 @@ export function cleanJsonString(content: any) {
   if (Buffer.isBuffer(content)) {
     content = content.toString("utf8");
   }
-  return content
-    .replace(/^\uFEFF/, "")
-    .replace(/\r\n/g, "")
-    .replace(/\n/g, "");
+  if (content !== null && content !== undefined) {
+    return content
+      .replace(/^\uFEFF/, "")
+      .replace(/\r\n/g, "")
+      .replace(/\n/g, "");
+  }
+  return EOL;
 }
