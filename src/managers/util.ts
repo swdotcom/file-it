@@ -7,6 +7,10 @@ import { EOL } from "os";
  * @param options
  */
 export function jsonStringify(obj: any, options: any = {}) {
+  if (!obj) {
+    return null;
+  }
+
   const EOL = options.EOL || "\n";
 
   try {
