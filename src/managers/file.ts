@@ -3,6 +3,7 @@ import fs = require("fs");
 import universalify = require("universalify");
 
 // this keeps a map of
+// sdlfkjsdlfkjsdlfkjsdflkjsdflkjsdfljk
 // fileName => jsonData
 // in case reading ends of with a corrupted object
 const contentMap: any = {};
