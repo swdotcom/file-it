@@ -3,6 +3,7 @@ import { EOL } from "os";
 
 /**
  * Stringify the object and replace newlines with EOL
+
  * @param obj
  * @param options
  */

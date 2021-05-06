@@ -2,7 +2,7 @@ import { cleanJsonString, jsonStringify } from "./util";
 import fs = require("fs");
 import universalify = require("universalify");
 
-// this keeps a map of:
+// this keeps a map of.....
 // fileName => jsonData
 // in case reading ends of with a corrupted object
 const contentMap: any = {};
