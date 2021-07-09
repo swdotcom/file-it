@@ -2,8 +2,6 @@ import { cleanJsonString, jsonStringify } from "./util";
 import fs = require("fs");
 import universalify = require("universalify");
 
-// this keeps a map of:
-// fileName => jsonData
 // in case reading ends of with a corrupted object
 const contentMap: any = {};
 
@@ -79,24 +77,19 @@ export function _readJsonFileSync(file: string): any {
     return null;
   }
 
-  try {
-    let content: string = fs.readFileSync(file, { encoding: "utf8" });
-    return parseJsonContent(file, content);
-  } catch (err) {
-    const obj = tryCachedContent(file);
-    if (!obj) {
-      const message = `Error reading JSON content. ${file} : ${err.message}`;
-      return { error: err, message: message };
-    }
-    return obj;
-  }
+  const content: string = fs.readFileSync(file, { encoding: "utf8" });
+  return parseJsonContent(file, content);
 }
 
 function parseJsonContent(file: string, content: any) {
   // remove byte order mark
   content = cleanJsonString(content);
 
-  let obj: any;
+  if (!content) {
+    return null;
+  }
+
+  let obj: any = null;
   try {
     obj = JSON.parse(content);
   } catch (err) {
@@ -177,6 +170,10 @@ export async function _writeContentFileSync(
     };
   }
 
+  if (content === "undefined") {
+    content = "";
+  }
+
   // check to see if the previous file is json
   if (contentMap[file] && isJsonFileType(file)) {
     try {
@@ -206,13 +203,13 @@ export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
   if (content) {
     return _writeContentFileSync(file, content, options);
   }
-  return {error: "write content file sync error", message: ""};
+  return { error: "write content file sync error", message: "" };
 }
 
 export async function _appendJsonFileSync(file: string, obj: any, options: any = {}) {
   const content: string = jsonStringify(obj, options);
   if (!content) {
-    return {error: "append file sync error", message: ""};
+    return { error: "append file sync error", message: "" };
   }
   if (!options.encoding) {
     options = {
