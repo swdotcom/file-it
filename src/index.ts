@@ -14,8 +14,8 @@ import {
   _readJsonArraySync,
   _readJsonLinesSync,
   _findSortedJsonElement,
-} from "./managers/file";
-import universalify = require("universalify");
+} from './managers/file';
+import universalify = require('universalify');
 
 const fileIt = {
   makeDirSync: _makeDirSync,

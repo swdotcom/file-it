@@ -1,6 +1,6 @@
-import { cleanJsonString, jsonStringify } from "./util";
-import fs = require("fs");
-import universalify = require("universalify");
+import { cleanJsonString, jsonStringify } from './util';
+import fs = require('fs');
+import universalify = require('universalify');
 
 // in case reading ends of with a corrupted object
 const contentMap: any = {};
@@ -22,7 +22,7 @@ export async function _readContentFileAsync(file: string): Promise<any> {
   }
 
   let content: any = await universalify.fromCallback(fs.readFile)(file, {
-    encoding: "utf8",
+    encoding: 'utf8',
   });
 
   return content;
@@ -39,7 +39,7 @@ export async function _readJsonFileAsync(file: string): Promise<any> {
   }
 
   let content: any = await universalify.fromCallback(fs.readFile)(file, {
-    encoding: "utf8",
+    encoding: 'utf8',
   });
 
   return parseJsonContent(file, content);
@@ -55,13 +55,13 @@ export function _readContentFileSync(file: string): any {
   }
 
   try {
-    let content: string = fs.readFileSync(file, { encoding: "utf8" });
+    let content: string = fs.readFileSync(file, { encoding: 'utf8' });
     return content;
-  } catch (err) {
+  } catch (e: any) {
     const content = tryCachedContent(file, false);
     if (!content) {
-      const message = `Error reading file content. ${file} : ${err.message}`;
-      return { error: err, message: message };
+      const message = `Error reading file content. ${file} : ${e.message}`;
+      return { error: e, message: message };
     }
     return content;
   }
@@ -77,7 +77,7 @@ export function _readJsonFileSync(file: string): any {
     return null;
   }
 
-  const content: string = fs.readFileSync(file, { encoding: "utf8" });
+  const content: string = fs.readFileSync(file, { encoding: 'utf8' });
   return parseJsonContent(file, content);
 }
 
@@ -92,7 +92,7 @@ function parseJsonContent(file: string, content: any) {
   let obj: any = null;
   try {
     obj = JSON.parse(content);
-  } catch (err) {
+  } catch (err: any) {
     obj = tryCachedContent(file);
     if (!obj) {
       const message = `Error parsing JSON content. ${file} : ${err.message}`;
@@ -110,7 +110,7 @@ function tryCachedContent(file: string, isJson: boolean = true) {
     if (isJson) {
       try {
         obj = JSON.parse(content);
-      } catch (err) {
+      } catch (err: any) {
         const message = `Error parsing cached JSON content. ${file} : ${err.message}`;
         return { error: err, message: message };
       }
@@ -127,15 +127,11 @@ function tryCachedContent(file: string, isJson: boolean = true) {
 /**
  * Write a content file asynchronously
  */
-export async function _writeContentFileAsync(
-  file: string,
-  content: string,
-  options: any = {},
-) {
+export async function _writeContentFileAsync(file: string, content: string, options: any = {}) {
   if (!options.encoding) {
     options = {
       ...options,
-      encoding: "utf8",
+      encoding: 'utf8',
     };
   }
   const result = await universalify.fromCallback(fs.writeFile)(file, content, options);
@@ -158,20 +154,16 @@ export async function _writeJsonFileAsync(file: string, obj: any, options: any =
 /**
  * Write a content file synchronously
  */
-export async function _writeContentFileSync(
-  file: string,
-  content: string,
-  options: any = {},
-) {
+export async function _writeContentFileSync(file: string, content: string, options: any = {}) {
   if (!options.encoding) {
     options = {
       ...options,
-      encoding: "utf8",
+      encoding: 'utf8',
     };
   }
 
-  if (content === "undefined") {
-    content = "";
+  if (content === 'undefined') {
+    content = '';
   }
 
   // check to see if the previous file is json
@@ -182,7 +174,7 @@ export async function _writeContentFileSync(
         // the previous file is json, make sure we can parse this content to json
         JSON.parse(content);
       }
-    } catch (err) {
+    } catch (err: any) {
       const message = `Error replacing existing JSON content with non-JSON content. ${file} : ${err.message}`;
       return { error: err, message: message };
     }
@@ -203,25 +195,25 @@ export function _writeJsonFileSync(file: string, obj: any, options: any = {}) {
   if (content) {
     return _writeContentFileSync(file, content, options);
   }
-  return { error: "write content file sync error", message: "" };
+  return { error: 'write content file sync error', message: '' };
 }
 
 export async function _appendJsonFileSync(file: string, obj: any, options: any = {}) {
   const content: string = jsonStringify(obj, options);
   if (!content) {
-    return { error: "append file sync error", message: "" };
+    return { error: 'append file sync error', message: '' };
   }
   if (!options.encoding) {
     options = {
       ...options,
-      encoding: "utf8",
+      encoding: 'utf8',
     };
   }
 
   const result = fs.appendFileSync(file, content, options);
 
   // set the flag to append as this is the append request
-  await updateContentMap(file, content, { flag: "a" });
+  await updateContentMap(file, content, { flag: 'a' });
 
   return result;
 }
@@ -293,7 +285,7 @@ export function _readJsonLinesSync(file: string): any[] {
           })
           // make sure we don't return any null lines
           .filter((item: string) => item);
-      } catch (err) {
+      } catch (err: any) {
         err.message = `${file}: ${err.message}`;
         throw err;
       }
@@ -308,14 +300,10 @@ export function _readJsonLinesSync(file: string): any[] {
  * @param attribute
  * @param direction desc by default
  */
-export function _findSortedJsonElement(
-  file: string,
-  attribute: string,
-  direction: string = "asc",
-) {
+export function _findSortedJsonElement(file: string, attribute: string, direction: string = 'asc') {
   const jsonArray = _readJsonArraySync(file);
   if (jsonArray && jsonArray.length) {
-    if (direction.toLowerCase() === "desc") {
+    if (direction.toLowerCase() === 'desc') {
       // desc
       if (attribute) {
         jsonArray.sort((a: any, b: any) => a[attribute] - b[attribute]);
@@ -336,7 +324,7 @@ export function _findSortedJsonElement(
 }
 
 async function updateContentMap(file: string, content: string, options: any) {
-  if (options.flag && options.flag === "a") {
+  if (options.flag && options.flag === 'a') {
     await _readContentFileAsync(file).then((result) => {
       contentMap[file] = result;
     });
@@ -347,18 +335,18 @@ async function updateContentMap(file: string, content: string, options: any) {
 }
 
 function getFileType(fileName: string) {
-  let fileType: string = "";
-  const lastDotIdx: number = fileName.lastIndexOf(".");
+  let fileType: string = '';
+  const lastDotIdx: number = fileName.lastIndexOf('.');
   const len: number = fileName.length;
   if (lastDotIdx !== -1 && lastDotIdx < len - 1) {
     fileType = fileName.substring(lastDotIdx + 1);
   }
-  return fileType || "";
+  return fileType || '';
 }
 
 function isJsonFileType(fileName: string) {
   const fileType: string = getFileType(fileName);
-  if (fileType.toLowerCase() === "json") {
+  if (fileType.toLowerCase() === 'json') {
     return true;
   }
   return false;
