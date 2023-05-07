@@ -1,24 +1,33 @@
-import fs = require("fs");
-import path = require("path");
+import { existsSync, mkdirSync } from "fs";
+
+
 import { expect } from "chai";
 
 const fileIt = require("../../src");
-const rimraf = require("rimraf");
+import { moveRemoveSync } from 'rimraf'
+
+import path from "path";
 
 describe("Json FileIt Write Tests", function () {
   let TEST_DIR: string = "";
 
   beforeEach((done) => {
     TEST_DIR = path.join(__dirname, "..", 'fileIt-tests');
-    rimraf.sync(TEST_DIR);
-    if (!fs.existsSync(TEST_DIR)) {
-      fs.mkdirSync(TEST_DIR);
+    if (existsSync(TEST_DIR)) {
+      moveRemoveSync(TEST_DIR);
+    }
+
+    if (!existsSync(TEST_DIR)) {
+      mkdirSync(TEST_DIR);
     }
     done();
   });
 
   afterEach((done) => {
-    rimraf.sync(TEST_DIR);
+    if (existsSync(TEST_DIR)) {
+      moveRemoveSync(TEST_DIR);
+    }
+
     done();
   });
 
