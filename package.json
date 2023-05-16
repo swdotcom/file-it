@@ -8,7 +8,7 @@
     "build": "tsc",
     "prepare": "yarn build",
     "publish": "npm publish",
-    "test": "yarn build && NODE_ENV=test mocha -r ts-node/register test/**/*test.ts --reporter spec --timeout 20000 --exit",
+    "test": "yarn build &&  mocha -r ts-node/register test/**/*test.ts --reporter spec --timeout 20000 --exit",
     "version": "yarn format && git add -A src"
   },
   "repository": {
@@ -37,13 +37,14 @@
     "@typescript-eslint/parser": "^4.31.2",
     "chai": "^4.2.0",
     "mocha": "^8.0.1",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5.0.0",
     "standard": "^14.3.4",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.4"
   },
   "dependencies": {
     "@types/universalify": "^1.0.0",
+    "promise-plus-callback": "^1.0.5",
     "universalify": "^2.0.0"
   }
 }
